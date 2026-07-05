@@ -29,7 +29,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f'Ulogovan sam kao {bot.user}')
     # Ovde menjaš šta piše botu u statusu!
-    await bot.change_presence(activity=discord.Game(name="Blejim na serveru 24/7"))
+    await bot.change_presence(activity=discord.Game(name="💚 Next Level Community 💚"))
 
 # --- 3. DEO: Komande ---
 @bot.command()
