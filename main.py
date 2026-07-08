@@ -26,16 +26,18 @@ def keep_alive():
 intents = discord.Intents.default()
 intents.message_content = True
 
-# Prefiks je podešen na t! za glavnog bota
 bot = commands.Bot(command_prefix="t!", intents=intents)
 bot.remove_command('help')  # Force gašenje fabričkog help-a
 
 # ==========================================
-# 3. DOGAĐAJI (EVENTS)
+# 3. DOGAĐAJI (EVENTS) + CUSTOM STATUS
 # ==========================================
 @bot.event
 async def on_ready():
     print(f'Glavni bot je spreman i online!')
+    
+    # OVDE JE TVOJ CUSTOM STATUS (Promeni tekst po zelji)
+    await bot.change_presence(activity=discord.CustomActivity(name="tvoj status ovde"))
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -60,7 +62,6 @@ async def main_help(ctx):
         "<:arrow_join6:1516798345568456714> **__Vas Next Level Community__**"
     )
     
-    # Kreiranje prelepog zelenog embeda (#7ED321)
     embed = discord.Embed(
         title="<:arrow_join6:1516798345568456714>**__ Next Level Community Help Bot__**",
         description=opis_poruke,
