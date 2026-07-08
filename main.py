@@ -27,7 +27,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="t!", intents=intents)
-bot.remove_command('help')  # Force gašenje fabričkog help-a
+bot.remove_command('help')  # Isključujemo fabrički help da bismo ubacili naš
 
 # ==========================================
 # 3. DOGAĐAJI (EVENTS) + CUSTOM STATUS
@@ -35,8 +35,7 @@ bot.remove_command('help')  # Force gašenje fabričkog help-a
 @bot.event
 async def on_ready():
     print(f'Glavni bot je spreman i online!')
-    
-    # OVDE JE TVOJ CUSTOM STATUS (Promeni tekst po zelji)
+    # Postavljanje traženog custom statusa
     await bot.change_presence(activity=discord.CustomActivity(name="Za Pomoc: t!help"))
 
 @bot.event
@@ -46,8 +45,10 @@ async def on_command_error(ctx, error):
     raise error
 
 # ==========================================
-# 4. NOVA PRILAGOĐENA HELP KOMANDA U EMBEDU
+# 4. BOT KOMANDE
 # ==========================================
+
+# ➡️ KOMANDA: t!help
 @bot.command(name="help")
 async def main_help(ctx):
     opis_poruke = (
@@ -68,6 +69,36 @@ async def main_help(ctx):
         color=0x7ED321
     )
     await ctx.send(embed=embed)
+
+
+# ➡️ KOMANDA: t!say (Slanje obične poruke preko bota)
+@bot.command(name="say")
+@commands.has_permissions(administrator=True)
+async def say(ctx, kanal: discord.TextChannel, *, poruka: str):
+    await ctx.message.delete()  # Briše tvoju komandu iz chata
+    await kanal.send(poruka)
+
+
+# ➡️ KOMANDA: t!esay (Slanje EMBED poruke preko bota sa zelenom bojom)
+@bot.command(name="esay")
+@commands.has_permissions(administrator=True)
+async def esay(ctx, kanal: discord.TextChannel, *, poruka: str):
+    await ctx.message.delete()  # Briše tvoju komandu iz chata
+    
+    # Pravimo embed sa istom zelenom bojom #7ED321
+    embed = discord.Embed(
+        description=poruka,
+        color=0x7ED321
+    )
+    await kanal.send(embed=embed)
+
+
+# Error handler za obe say komande ako zaboraviš parametre
+@say.error
+@esay.error
+async def say_error_handler(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("❌ **Greška!** Pravilan unos je:\n`t!say #kanal Tekst` za običnu poruku\n`t!esay #kanal Tekst` za Embed poruku", delete_after=7)
 
 # ==========================================
 # 5. POKRETANJE BOTA
