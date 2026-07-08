@@ -37,7 +37,7 @@ async def on_ready():
     print(f'Glavni bot je spreman i online!')
     
     # OVDE JE TVOJ CUSTOM STATUS (Promeni tekst po zelji)
-    await bot.change_presence(activity=discord.CustomActivity(name="tvoj status ovde"))
+    await bot.change_presence(activity=discord.CustomActivity(name="Za Pomoc: t!help"))
 
 @bot.event
 async def on_command_error(ctx, error):
