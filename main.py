@@ -1,4 +1,3 @@
-This bot is made for the Serbian language, you can make changes. [Owner malirajko]
 
 import discord
 from discord.ext import commands
